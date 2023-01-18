@@ -12,21 +12,9 @@ http.createServer((request, response) => {
     });
     if (request.method === 'POST' && request.url === '/file') {
         const fs = require('fs');
-
-        fs.readFile('test.txt', 'utf8', (err, data) => {
-            if (err) {
-                console.log("error", err)
-                response.setHeader("Access-Control-Allow-Origin", "http://localhost:8000")
-                response.setHeader("content-type", "text/plain")
-                // request.pipe(response);
-                response.end(err)
-            }
-            response.setHeader("Access-Control-Allow-Origin", "http://localhost:8000")
-            response.setHeader("content-type", "text/plain")
-            // request.pipe(response);
-            response.end(data)
-        });
-
+        response.setHeader("Access-Control-Allow-Origin", "http://localhost:8000")
+        response.setHeader("content-type", "text/plain")
+        fs.createReadStream("test.txt").pipe(response);
     } else {
         response.statusCode = 404;
         response.end();
